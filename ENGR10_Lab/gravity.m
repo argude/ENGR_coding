@@ -1,13 +1,11 @@
-# Exercise 2
-function [a, erra, am, erram,coefficient]= acceleration(t0, tp, input_datafile,angle,gravity)
-# Calculate average acceleration vector,
-# magnitude acceleration and statistical errors
+# Exercise 1, i)
+function [gvector, erra, gm, erram, theta]=gravity(t0, tp, input_datafile)
+# Calculate gravity vector gvector and the error vector erram
+# Calculate the magnituce of the gravity and the magnitude of the error
 # in a time interval.
 # t0: initial time
 # tp: end time
 # input_datafile: data file
-# angle of the incline
-# gravity = magnitude
 
 # Load the data with function load from Octave
 data=load(input_datafile);
@@ -25,18 +23,18 @@ i0=min(find(t>=t0));
 ip=max(find(t<=tp));
 
 # average acceleration and error
-a=-mean(data(i0:ip,1:3));
+gvector= -mean(data(i0:ip,1:3));
 erra=std(data(i0:ip,1:3));
 # magnitude
-am=sqrt(sum(a.^2));
+gm=sqrt(sum(gvector.^2));
 erram=sqrt(sum(erra.^2));
 
 ag=data(:,1:3); #2D array with len(dt) rows and 3 (agx,agy,agz) columns
 # time data in s.
-ax = mean(ag(i0:ip,1)); % average in the x-axis
-ay = mean(ag(i0:ip,2)); % average in the y-axis
-az = mean(ag(i0:ip,3)); % average in the z-axis
+agx = -mean(ag(i0:ip,1)); % average -g in the x-axis
+agy = -mean(ag(i0:ip,2)); % average -g in the y-axis
+agz = -mean(ag(i0:ip,3)); % average -g in the z-axis
 
-coefficient =  (sind(angle)-(am)/gravity)/cosd(angle);
+theta = atan2d(abs(agy),abs(agz));
 
 endfunction
